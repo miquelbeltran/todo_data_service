@@ -1,25 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:todo_data_service/data/repositories/ThemeRepository.dart';
+import 'package:todo_data_service/data/repositories/theme_repository.dart';
 
 class ThemeButtonViewModel extends ChangeNotifier {
   ThemeButtonViewModel(this._themeRepository) {
-    // listen to changes in the theme repository
-    _subscription = _themeRepository.observeDarkMode().listen((isDarkMode) {
-      _isDarkMode = isDarkMode;
-      notifyListeners();
-    });
-
-    // load on ViewModel created
     load();
   }
 
   final ThemeRepository _themeRepository;
 
   bool _isDarkMode = false;
-
-  StreamSubscription<bool>? _subscription;
 
   /// If true show dark mode
   bool get isDarkMode => _isDarkMode;
@@ -33,11 +24,7 @@ class ThemeButtonViewModel extends ChangeNotifier {
   /// Toggle the theme setting
   void toggleTheme() {
     _themeRepository.setDarkMode(!_isDarkMode);
-  }
-
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    super.dispose();
+    _isDarkMode = !_isDarkMode;
+    notifyListeners();
   }
 }
