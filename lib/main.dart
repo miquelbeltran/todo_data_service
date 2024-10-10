@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_data_service/data/services/shared_preferences_service.dart';
+import 'package:todo_data_service/ui/todo_list/viewmodel/todo_list_viewmodel.dart';
 
 import 'data/repositories/theme_repository.dart';
 import 'main_app_viewmodel.dart';
@@ -65,7 +66,9 @@ class _MainAppState extends State<MainApp> {
           ],
           title: const Text('Todo List'),
         ),
-        body: const TodoListScreen(),
+        body: TodoListScreen(
+          viewModel: TodoListViewModel(),
+        ),
       ),
     );
   }
