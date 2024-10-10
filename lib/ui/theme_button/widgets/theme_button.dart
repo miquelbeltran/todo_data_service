@@ -19,7 +19,7 @@ class ThemeButton extends StatelessWidget {
           return Switch(
             value: viewmodel.isDarkMode,
             onChanged: (_) {
-              viewmodel.toggleTheme();
+              viewmodel.toggle.execute();
             },
           );
         },

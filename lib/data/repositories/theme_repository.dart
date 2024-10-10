@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import '../../utils/result.dart';
 import '../services/shared_preferences_service.dart';
 
 /// Repository for theme settings.
@@ -14,14 +15,24 @@ class ThemeRepository {
   final SharedPreferencesService _keyValueService;
 
   /// Get if dark mode is enabled
-  Future<bool> isDarkMode() async {
-    return await _keyValueService.isDarkMode();
+  Future<Result<bool>> isDarkMode() async {
+    try {
+      final value = await _keyValueService.isDarkMode();
+      return Result.ok(value);
+    } on Exception catch (e) {
+      return Result.error(e);
+    }
   }
 
   /// Set dark mode
-  Future<void> setDarkMode(bool value) async {
-    _darkModeController.add(value);
-    await _keyValueService.setDarkMode(value);
+  Future<Result<void>> setDarkMode(bool value) async {
+    try {
+      await _keyValueService.setDarkMode(value);
+      _darkModeController.add(value);
+      return Result.ok(null);
+    } on Exception catch (e) {
+      return Result.error(e);
+    }
   }
 
   /// Stream that emits theme config changes.

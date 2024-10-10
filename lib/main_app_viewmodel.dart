@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'data/repositories/theme_repository.dart';
+import 'utils/result.dart';
 
 /// Exposes the current theme setting and listens for changes.
 class MainAppViewModel extends ChangeNotifier {
@@ -13,7 +14,7 @@ class MainAppViewModel extends ChangeNotifier {
       _isDarkMode = isDarkMode;
       notifyListeners();
     });
-    load();
+    _load();
   }
 
   final ThemeRepository _themeRepository;
@@ -23,9 +24,17 @@ class MainAppViewModel extends ChangeNotifier {
 
   bool get isDarkMode => _isDarkMode;
 
-  Future<void> load() async {
-    _isDarkMode = await _themeRepository.isDarkMode();
-    notifyListeners();
+  Future<void> _load() async {
+    try {
+      final result = await _themeRepository.isDarkMode();
+      if (result is Ok<bool>) {
+        _isDarkMode = result.value;
+      }
+    } on Exception catch (_) {
+      // handle error
+    } finally {
+      notifyListeners();
+    }
   }
 
   @override

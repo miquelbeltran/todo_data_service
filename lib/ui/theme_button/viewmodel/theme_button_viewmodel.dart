@@ -3,9 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:todo_data_service/data/repositories/theme_repository.dart';
 
+import '../../../utils/command.dart';
+import '../../../utils/result.dart';
+
 class ThemeButtonViewModel extends ChangeNotifier {
   ThemeButtonViewModel(this._themeRepository) {
-    load();
+    load = Command0(_load)..execute();
+    toggle = Command0(_toggle);
   }
 
   final ThemeRepository _themeRepository;
@@ -15,16 +19,34 @@ class ThemeButtonViewModel extends ChangeNotifier {
   /// If true show dark mode
   bool get isDarkMode => _isDarkMode;
 
+  late Command0 load;
+
+  late Command0 toggle;
+
   /// Load the current theme setting from the repository
-  Future<void> load() async {
-    _isDarkMode = await _themeRepository.isDarkMode();
-    notifyListeners();
+  Future<Result<void>> _load() async {
+    try {
+      final result = await _themeRepository.isDarkMode();
+      if (result is Ok<bool>) {
+        _isDarkMode = result.value;
+      }
+      return result;
+    } on Exception catch (e) {
+      return Result.error(e);
+    } finally {
+      notifyListeners();
+    }
   }
 
   /// Toggle the theme setting
-  void toggleTheme() {
-    _themeRepository.setDarkMode(!_isDarkMode);
-    _isDarkMode = !_isDarkMode;
-    notifyListeners();
+  Future<Result<void>> _toggle() async {
+    try {
+      _isDarkMode = !_isDarkMode;
+      return await _themeRepository.setDarkMode(_isDarkMode);
+    } on Exception catch (e) {
+      return Result.error(e);
+    } finally {
+      notifyListeners();
+    }
   }
 }
