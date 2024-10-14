@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_data_service/data/repositories/todo_repository.dart';
 import 'package:todo_data_service/data/services/shared_preferences_service.dart';
 import 'package:todo_data_service/ui/todo_list/viewmodel/todo_list_viewmodel.dart';
 
@@ -14,6 +15,7 @@ void main() {
       themeRepository: ThemeRepository(
         SharedPreferencesService(),
       ),
+      todoRepository: TodoRepository(),
     ),
   );
 }
@@ -22,9 +24,11 @@ class MainApp extends StatefulWidget {
   const MainApp({
     super.key,
     required this.themeRepository,
+    required this.todoRepository,
   });
 
   final ThemeRepository themeRepository;
+  final TodoRepository todoRepository;
 
   @override
   State<MainApp> createState() => _MainAppState();
@@ -67,7 +71,9 @@ class _MainAppState extends State<MainApp> {
           title: const Text('Todo List'),
         ),
         body: TodoListScreen(
-          viewModel: TodoListViewModel(),
+          viewModel: TodoListViewModel(
+            todoRepository: widget.todoRepository,
+          ),
         ),
       ),
     );

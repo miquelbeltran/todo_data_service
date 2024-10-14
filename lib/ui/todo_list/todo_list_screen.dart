@@ -37,12 +37,14 @@ class _TodoListScreenState extends State<TodoListScreen> {
             listenable: widget.viewModel,
             builder: (context, child) {
               return ListView.builder(
+                itemCount: widget.viewModel.todos.length,
                 itemBuilder: (context, index) {
+                  final todo = widget.viewModel.todos[index];
                   return ListTile(
-                    title: const Text('Task'),
+                    title: Text(todo.task),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
-                      onPressed: () => widget.viewModel.delete.execute(index),
+                      onPressed: () => widget.viewModel.delete.execute(todo.id),
                     ),
                   );
                 },

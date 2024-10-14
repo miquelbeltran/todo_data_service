@@ -1,13 +1,20 @@
 import 'package:flutter/foundation.dart';
+import 'package:todo_data_service/data/repositories/todo_repository.dart';
 import 'package:todo_data_service/utils/command.dart';
 import 'package:todo_data_service/utils/result.dart';
 
+import '../../../business/model/todo.dart';
+
 class TodoListViewModel extends ChangeNotifier {
-  TodoListViewModel() {
-    load = Command0<void>(_load);
+  TodoListViewModel({
+    required TodoRepository todoRepository,
+  }) : _todoRepository = todoRepository {
+    load = Command0<void>(_load)..execute();
     add = Command1<void, String>(_add);
     delete = Command1<void, int>(_delete);
   }
+
+  final TodoRepository _todoRepository;
 
   /// Load Todo items from repository.
   late Command0<void> load;
@@ -18,15 +25,58 @@ class TodoListViewModel extends ChangeNotifier {
   /// Delete a Todo item by its id.
   late Command1<void, int> delete;
 
+  List<Todo> _todos = [];
+
+  List<Todo> get todos => _todos;
+
   Future<Result<void>> _load() async {
-    return Result.ok(null);
+    try {
+      final result = await _todoRepository.fetchTodos();
+      switch (result) {
+        case Ok<List<Todo>>():
+          _todos = result.value;
+          return Result.ok(null);
+        case Error():
+          return Result.error(result.error);
+      }
+    } on Exception catch (e) {
+      return Result.error(e);
+    } finally {
+      notifyListeners();
+    }
   }
 
   Future<Result<void>> _add(String task) async {
-    return Result.ok(null);
+    try {
+      final result = await _todoRepository.createTodo(task);
+      switch (result) {
+        case Ok<Todo>():
+          _todos.add(result.value);
+          return Result.ok(null);
+        case Error():
+          return Result.error(result.error);
+      }
+    } on Exception catch (e) {
+      return Result.error(e);
+    } finally {
+      notifyListeners();
+    }
   }
 
   Future<Result<void>> _delete(int id) async {
-    return Result.ok(null);
+    try {
+      final result = await _todoRepository.deleteTodo(id);
+      switch (result) {
+        case Ok<void>():
+          _todos.removeWhere((todo) => todo.id == id);
+          return Result.ok(null);
+        case Error():
+          return Result.error(result.error);
+      }
+    } on Exception catch (e) {
+      return Result.error(e);
+    } finally {
+      notifyListeners();
+    }
   }
 }
