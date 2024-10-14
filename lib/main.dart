@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_data_service/data/repositories/todo_repository.dart';
+import 'package:todo_data_service/data/services/database_service.dart';
 import 'package:todo_data_service/data/services/shared_preferences_service.dart';
 import 'package:todo_data_service/ui/todo_list/viewmodel/todo_list_viewmodel.dart';
 
@@ -15,7 +16,9 @@ void main() {
       themeRepository: ThemeRepository(
         SharedPreferencesService(),
       ),
-      todoRepository: TodoRepository(),
+      todoRepository: TodoRepository(
+        database: DatabaseService(),
+      ),
     ),
   );
 }
