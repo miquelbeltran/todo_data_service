@@ -6,8 +6,8 @@ import 'package:todo_data_service/ui/todo_list/viewmodel/todo_list_viewmodel.dar
 
 import 'data/repositories/theme_repository.dart';
 import 'main_app_viewmodel.dart';
-import 'ui/theme_button/viewmodel/theme_button_viewmodel.dart';
-import 'ui/theme_button/widgets/theme_button.dart';
+import 'ui/theme_config/viewmodel/theme_switch_viewmodel.dart';
+import 'ui/theme_config/widgets/theme_switch.dart';
 import 'ui/todo_list/todo_list_screen.dart';
 
 void main() {
@@ -65,8 +65,8 @@ class _MainAppState extends State<MainApp> {
       child: Scaffold(
         appBar: AppBar(
           actions: [
-            ThemeButton(
-              viewmodel: ThemeButtonViewModel(
+            ThemeSwitch(
+              viewmodel: ThemeSwitchViewModel(
                 widget.themeRepository,
               ),
             )

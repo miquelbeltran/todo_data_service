@@ -6,8 +6,8 @@ import 'package:todo_data_service/data/repositories/theme_repository.dart';
 import '../../../utils/command.dart';
 import '../../../utils/result.dart';
 
-class ThemeButtonViewModel extends ChangeNotifier {
-  ThemeButtonViewModel(this._themeRepository) {
+class ThemeSwitchViewModel extends ChangeNotifier {
+  ThemeSwitchViewModel(this._themeRepository) {
     load = Command0(_load)..execute();
     toggle = Command0(_toggle);
   }

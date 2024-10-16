@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:todo_data_service/ui/theme_button/viewmodel/theme_button_viewmodel.dart';
+import 'package:todo_data_service/ui/theme_config/viewmodel/theme_switch_viewmodel.dart';
 
-class ThemeButton extends StatelessWidget {
-  const ThemeButton({
+class ThemeSwitch extends StatelessWidget {
+  const ThemeSwitch({
     super.key,
     required this.viewmodel,
   });
 
-  final ThemeButtonViewModel viewmodel;
+  final ThemeSwitchViewModel viewmodel;
 
   @override
   Widget build(BuildContext context) {
