@@ -5,6 +5,12 @@ import '../../business/model/todo.dart';
 import '../../utils/result.dart';
 
 class DatabaseService {
+  DatabaseService({
+    required this.databaseFactory,
+  });
+
+  final DatabaseFactory databaseFactory;
+
   static const _kTableTodo = 'todo';
   static const _kColumnId = '_id';
   static const _kColumnTask = 'task';
@@ -14,14 +20,16 @@ class DatabaseService {
   bool isOpen() => _database != null;
 
   Future<void> open() async {
-    _database = await openDatabase(
-      join(await getDatabasesPath(), 'app_database.db'),
-      onCreate: (db, version) {
-        return db.execute(
-          'CREATE TABLE $_kTableTodo($_kColumnId INTEGER PRIMARY KEY AUTOINCREMENT, $_kColumnTask TEXT)',
-        );
-      },
-      version: 1,
+    _database = await databaseFactory.openDatabase(
+      join(await databaseFactory.getDatabasesPath(), 'app_database.db'),
+      options: OpenDatabaseOptions(
+        onCreate: (db, version) {
+          return db.execute(
+            'CREATE TABLE $_kTableTodo($_kColumnId INTEGER PRIMARY KEY AUTOINCREMENT, $_kColumnTask TEXT)',
+          );
+        },
+        version: 1,
+      ),
     );
   }
 
