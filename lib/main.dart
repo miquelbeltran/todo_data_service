@@ -12,7 +12,7 @@ import 'data/repositories/theme_repository.dart';
 import 'main_app_viewmodel.dart';
 import 'ui/theme_config/viewmodel/theme_switch_viewmodel.dart';
 import 'ui/theme_config/widgets/theme_switch.dart';
-import 'ui/todo_list/todo_list_screen.dart';
+import 'ui/todo_list/widgets/todo_list_screen.dart';
 
 void main() {
   late DatabaseService databaseService;
