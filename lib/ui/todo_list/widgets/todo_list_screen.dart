@@ -20,11 +20,13 @@ class _TodoListScreenState extends State<TodoListScreen> {
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    widget.viewModel.add.addListener(_onAdd);
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    widget.viewModel.add.removeListener(_onAdd);
     super.dispose();
   }
 
@@ -52,24 +54,39 @@ class _TodoListScreenState extends State<TodoListScreen> {
             },
           ),
         ),
-        Row(
-          children: [
-            Expanded(
-              child: TextField(
-                controller: _controller,
-                decoration: const InputDecoration(
-                  hintText: 'Add a new task',
+        Material(
+          elevation: 8,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      hintText: 'Add a new task',
+                    ),
+                  ),
                 ),
-              ),
+                FilledButton.icon(
+                  onPressed: () =>
+                      widget.viewModel.add.execute(_controller.text),
+                  label: const Text('Add'),
+                  icon: const Icon(Icons.add),
+                ),
+              ],
             ),
-            FilledButton.icon(
-              onPressed: () => widget.viewModel.add.execute(_controller.text),
-              label: const Text('Add'),
-              icon: const Icon(Icons.add),
-            ),
-          ],
+          ),
         ),
       ],
     );
+  }
+
+  void _onAdd() {
+    // Clear the text field when the add command completes.
+    if (widget.viewModel.add.completed) {
+      widget.viewModel.add.clearResult();
+      _controller.clear();
+    }
   }
 }

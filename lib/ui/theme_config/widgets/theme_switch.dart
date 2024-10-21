@@ -13,16 +13,21 @@ class ThemeSwitch extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: ListenableBuilder(
-        listenable: viewmodel,
-        builder: (context, _) {
-          return Switch(
-            value: viewmodel.isDarkMode,
-            onChanged: (_) {
-              viewmodel.toggle.execute();
+      child: Row(
+        children: [
+          const Text('Dark Mode'),
+          ListenableBuilder(
+            listenable: viewmodel,
+            builder: (context, _) {
+              return Switch(
+                value: viewmodel.isDarkMode,
+                onChanged: (_) {
+                  viewmodel.toggle.execute();
+                },
+              );
             },
-          );
-        },
+          ),
+        ],
       ),
     );
   }

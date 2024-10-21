@@ -78,6 +78,7 @@ class _MainAppState extends State<MainApp> {
       listenable: _viewModel,
       builder: (context, child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: _viewModel.isDarkMode ? ThemeData.dark() : ThemeData.light(),
           home: child,
         );
@@ -91,7 +92,7 @@ class _MainAppState extends State<MainApp> {
               ),
             )
           ],
-          title: const Text('Todo List'),
+          title: const Text('ToDo List'),
         ),
         body: TodoListScreen(
           viewModel: TodoListViewModel(
